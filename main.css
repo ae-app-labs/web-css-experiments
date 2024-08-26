@@ -20,6 +20,11 @@ body {
     height: 100vh;
 }
 
+.nav {
+    padding: 1em 0;
+    background-color: var(--primary-color);
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
