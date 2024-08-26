@@ -1,6 +1,6 @@
 :root {
     --primary-color: #007bff;
-    --secondary-color: #6c757d;
+    --secondary-color: #75cc7d;
     --background-color: #1c1c1c;
     --text-color:#f8f8f8;
 }
@@ -12,6 +12,7 @@ html {
     color: var(--text-color);
     font-family: 'Open Sans', 'Inter', sans-serif;
     font-size: 1rem;
+    line-height: 2rem;
 }
 
 body {
@@ -19,12 +20,18 @@ body {
     padding: 0;
     height: 100vh;
 }
-
+a{
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+a:hover{
+    color: aliceblue;
+    text-decoration: underline;
+}
 .nav {
     padding: 1em 0;
     background-color: var(--primary-color);
 }
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
