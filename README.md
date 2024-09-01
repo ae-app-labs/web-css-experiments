@@ -12,3 +12,6 @@ Collection of css experiments
 
 ## custom-links
 [Source](https://github.com/ae-app-labs/web-custom-links) &middot; [Demo](https://ae-app-labs.github.io/web-custom-links/)
+
+## carousel-slider
+[Source](https://github.com/ae-app-labs/carousel-slider) &middot; [Demo](https://ae-app-labs.github.io/carousel-slider/)
