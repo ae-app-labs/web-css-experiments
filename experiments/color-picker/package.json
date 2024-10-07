@@ -1,0 +1,8 @@
+{
+  "name": "color-picker",
+  "version": "0.0.2",
+  "description": "color picker",
+  "keywords": ["web","color"],
+  "author": "ae-app-labs",
+  "license": "ISC"
+}

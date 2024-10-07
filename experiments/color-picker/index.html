@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>color picker</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <span onclick="changeColor('#FFB6C1')" style="--color:#FFB6C1 ;"></span>
+            <span onclick="changeColor('#FFD700')" style="--color:#FFD700 ;"></span>
+            <span onclick="changeColor('#98FB98')" style="--color:#98FB98 ;"></span>
+            <span onclick="changeColor('#ADD8E6')" style="--color:#ADD8E6 ;"></span>
+            <span onclick="changeColor('#FFA07A')" style="--color:#FFA07A ;"></span>
+        </div>
+        <div class="box"></div>
+    </div>
+</body>
+<script>
+    let box = document.querySelector('.box')
+    const changeColor = (color) => {
+        box.style.background = color;
+        box.style.boxShadow = `0 10px 20px ${color}`;
+        const activeSpan = document.querySelector('span.active');
+        if(activeSpan){
+            activeSpan.classList.remove('active')
+        }
+        event.target.classList.add('active')
+    }
+</script>
+</html>

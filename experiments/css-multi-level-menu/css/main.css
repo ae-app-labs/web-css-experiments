@@ -1,0 +1,62 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 150%;
+  font-size: 1.2em;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hamburger {
+  width: 20px;
+}
+
+.menu {
+  position: relative;
+}
+.menu .main-item {
+  width: 72px;
+  height: 72px;
+  background-color: #5272ff;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px, rgba(0, 0, 0, 0.2) 0px 3px 6px;
+  cursor: pointer;
+}
+.menu .main-item .sub-menu {
+  position: absolute;
+  top: 72px;
+  left: 0;
+  width: 170px;
+  background-color: #5272ff;
+  display: none;
+  flex-direction: column;
+  padding: 10px 0;
+  border-radius: 2mm;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 6px, rgba(0, 0, 0, 0.2) 0px 3px 6px;
+}
+.menu .main-item .sub-menu .item {
+  width: 100%;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: white;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.menu .main-item .sub-menu .item:hover {
+  background-color: #fff;
+  color: #000;
+}
+.menu .main-item .sub-menu .item .sub-menu {
+  top: 0;
+  left: 100%;
+}
+.menu .parent:hover > .sub-menu {
+  display: flex;
+}/*# sourceMappingURL=main.css.map */
