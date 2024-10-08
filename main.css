@@ -22,7 +22,7 @@ body {
 }
 footer {
     font-size: 0.8 em;
-    background-color: thistle;
+    background-color: #111;
 }
 a{
     color: var(--secondary-color);
