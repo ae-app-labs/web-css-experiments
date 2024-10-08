@@ -1,0 +1,13 @@
+title: web css experiments
+description: A collection of html and css experiments and proof of concepts
+baseurl: "web-css-experiments"
+
+url: "https://ae-app-labs.github.io"
+github_username: ae-app-labs
+
+theme: minima
+narkdown: kramdown
+
+exclude:
+ - README.md
+ - LICENSE

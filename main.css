@@ -20,6 +20,10 @@ body {
     padding: 0;
     height: 100vh;
 }
+footer {
+    font-size: 0.8 em;
+    background-color: thistle;
+}
 a{
     color: var(--secondary-color);
     text-decoration: none;
