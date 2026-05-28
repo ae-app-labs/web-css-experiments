@@ -122,11 +122,9 @@
             sharedContext: 'Write click inviting headlines'
           });
 
-          // Handle the streaming response
+          // Handle the streaming response by APPENDING each new chunk
           for await (const chunk of summarizer.summarizeStreaming(contentBody)) {
-            // Some API versions return the full cumulative text on each chunk, 
-            // others return just the delta. We assign or append accordingly.
-            outputText.textContent = chunk; 
+            outputText.textContent += chunk; 
           }
 
         } catch (error) {
