@@ -14,12 +14,12 @@
       
       <div class="has-text-centered mb-6">
         <h1 class="title is-2 has-text-primary">AI Summarizer API Test</h1>
-        <p class="subtitle is-6">Test Chrome's built-in Origin Trial Summarization API</p>
+        <p class="subtitle is-6">Testing Streaming Summarizer Interface</p>
       </div>
 
       <div id="statusNotification" class="notification is-warning is-light mb-5">
         <button class="delete" onclick="this.parentElement.classList.add('is-hidden')"></button>
-        <span id="statusMessage">Checking API compatibility...</span>
+        <span id="statusMessage">Checking Summarizer availability...</span>
       </div>
 
       <div class="card mb-5">
@@ -27,7 +27,7 @@
           <div class="field">
             <label class="label">Text to Summarize</label>
             <div class="control">
-              <textarea id="inputText" class="textarea" rows="8" placeholder="Paste your long article or text here (minimum 20 words recommended for best results)..."></textarea>
+              <textarea id="inputText" class="textarea" rows="8" placeholder="Paste your text here..."></textarea>
             </div>
             <p class="help has-text-right" id="charCount">0 characters</p>
           </div>
@@ -49,11 +49,11 @@
         <header class="card-header has-background-light">
           <p class="card-header-title">
             <span class="icon has-text-info mr-2"><i class="fas fa-file-alt"></i></span>
-            Summary Result
+            Summary Output (Streaming)
           </p>
         </header>
         <div class="card-content">
-          <div id="outputText" class="content">
+          <div id="outputText" class="content" style="white-space: pre-wrap;">
             </div>
         </div>
       </div>
@@ -64,7 +64,7 @@
   <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
+    document.addEventListener('DOMContentLoaded', () => {
       const inputText = document.getElementById('inputText');
       const outputText = document.getElementById('outputText');
       const resultCard = document.getElementById('resultCard');
@@ -74,44 +74,14 @@
       const statusMessage = document.getElementById('statusMessage');
       const charCount = document.getElementById('charCount');
 
-      let summarizerAvailable = false;
-
-      // 1. Check for API Availability and Fallback
-      async function checkAPI() {
-        if (!window.ai || !window.ai.summarizer) {
-          showStatus("Fallback: The Summarizer API is not supported in this browser. Please use Chrome Canary/Dev with 'Experimental Content Extraction' flags enabled.", "is-danger");
-          return false;
-        }
-
-        try {
-          const capabilities = await window.ai.summarizer.capabilities();
-          const available = capabilities.available;
-
-          if (available === 'no') {
-            showStatus("The Summarizer API is supported, but the built-in model is explicitly unavailable on this device.", "is-danger");
-            return false;
-          }
-
-          if (available === 'after-download') {
-            showStatus("The API is available, but needs to download the local model first. This might take a few minutes.", "is-info");
-            summarizeBtn.removeAttribute('disabled');
-            return true;
-          }
-
-          // Fully available ('readily')
-          statusNotification.classList.add('is-hidden');
-          summarizeBtn.removeAttribute('disabled');
-          return true;
-        } catch (error) {
-          showStatus(`Error checking capabilities: ${error.message}`, "is-danger");
-          return false;
-        }
-      }
-
-      // Helper to show custom status banners
-      function showStatus(text, bulmaClass) {
-        statusNotification.className = `notification ${bulmaClass} mb-5`;
-        statusMessage.textContent = text;
+      // 1. Graceful Fallback Check
+      if (typeof Summarizer === 'undefined') {
+        statusNotification.className = "notification is-danger mb-5";
+        statusMessage.textContent = "Fallback: The global 'Summarizer' object is not available in this browser. Ensure your experimental flags are matching this implementation.";
+      } else {
+        // API is available, hide notification and enable button
+        statusNotification.classList.add('is-hidden');
+        summarizeBtn.removeAttribute('disabled');
       }
 
       // 2. Character Counter Listener
@@ -119,57 +89,57 @@
         charCount.textContent = `${inputText.value.length} characters`;
       });
 
-      // 3. Clear Button Click
+      // 3. Clear Button Logic
       clearBtn.addEventListener('click', () => {
         inputText.value = '';
         charCount.textContent = '0 characters';
-        outputText.innerHTML = '';
+        outputText.textContent = '';
         resultCard.classList.add('is-hidden');
       });
 
-      // 4. Summarize Button Click (Execution)
+      // 4. Summarize Stream Execution
       summarizeBtn.addEventListener('click', async () => {
-        const text = inputText.value.trim();
-        if (!text) {
+        const contentBody = inputText.value.trim();
+        if (!contentBody) {
           alert('Please enter some text to summarize.');
           return;
         }
 
-        // Visual loading state
+        // Setup loading layout
         summarizeBtn.classList.add('is-loading');
         summarizeBtn.setAttribute('disabled', 'true');
         resultCard.classList.remove('is-hidden');
-        outputText.innerHTML = '<em class="has-text-grey">Processing summary via local AI model...</em>';
+        outputText.textContent = ''; // Clear previous outputs
 
         try {
-          // Initialize the summarizer options
-          const options = {
-            type: 'key-points', // 'tl;dr', 'key-points', 'teaser', or 'headline'
-            format: 'markdown',  // 'plain-text' or 'markdown'
-            length: 'medium'    // 'short', 'medium', or 'long'
-          };
+          // Initialize via your working signature
+          const summarizer = await Summarizer.create({
+            expectedInputLanguages: ['en'],
+            expectedContextLanguages: ['en'],
+            outputLanguage: 'en',
+            type: 'headline',
+            preference: 'speed',
+            sharedContext: 'Write click inviting headlines'
+          });
 
-          const summarizer = await window.ai.summarizer.create(options);
-          
-          // Execute summary
-          const result = await summarizer.summarize(text);
-          
-          // Render result (Simple line break swap if markdown isn't parsed natively)
-          outputText.innerHTML = result.replace(/\n/g, '<br>');
-          
-          // Clean up the model instance
-          summarizer.destroy();
+          // Handle the streaming response
+          for await (const chunk of summarizer.summarizeStreaming(contentBody)) {
+            // Some API versions return the full cumulative text on each chunk, 
+            // others return just the delta. We assign or append accordingly.
+            outputText.textContent = chunk; 
+          }
+
         } catch (error) {
-          showStatus(`Execution Failed: ${error.message}`, "is-danger");
-          outputText.innerHTML = `<span class="has-text-danger">Failed to generate summary. See error banner above.</span>`;
+          statusNotification.className = "notification is-danger mb-5";
+          statusNotification.classList.remove('is-hidden');
+          statusMessage.textContent = `Execution Error: ${error.message}`;
+          outputText.innerHTML = `<span class="has-text-danger">Failed to execute stream. See error above.</span>`;
         } finally {
           summarizeBtn.classList.remove('is-loading');
           summarizeBtn.removeAttribute('disabled');
         }
       });
-
-      // Initialize API check on page load
-      summarizerAvailable = await checkAPI();
     });
   </script>
 </body>
+</html>
