@@ -13,3 +13,4 @@ Links to some css based demos or concepts. Some of them are pure css/scss, while
 - [Multi Level Menu](experiments/css-multi-level-menu)
 - [Custom Links](experiments/custom-links/)
 - [Card Carousel](experiments/card-carousel/)
+- [Summarizer API](experiments/summarizer-api)
