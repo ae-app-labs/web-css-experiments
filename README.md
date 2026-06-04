@@ -17,4 +17,4 @@ Collection of css experiments
 [Source](https://github.com/ae-app-labs/carousel-slider) &middot; [Demo](https://ae-app-labs.github.io/carousel-slider/)
 
 ## summarizer-api
-[Demo](https://htmlpreview.github.io/?https://github.com/ae-app-labs/web-css-experiments/blob/main/experiments/summarizer-api/index.html)
+[Demo](https://ae-app-labs.github.io/web-css-experiments/experiments/summarizer-api/)
